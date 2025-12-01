@@ -17,7 +17,7 @@ use App\Http\Controllers\InventoryRequestController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//sumaiya
+//sumaiya ddddddddddddddddddddddddddddddd
 Route::get('/', function () {
     return redirect('login');
 });

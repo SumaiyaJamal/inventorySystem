@@ -38,11 +38,11 @@
 					</li>
 
 					@php
-						$user = auth()->user();
-						$isAdmin = $user && $user->hasRole('admin');
-						$isWarehouseManager = $user && $user->hasRole('warehouse_manager');
-						$showLedLight = $isAdmin || ($isWarehouseManager && $user->inventory_type == 'led_light');
-						$showSpices = $isAdmin || ($isWarehouseManager && $user->inventory_type == 'spices');
+						$currentUser = auth()->user();
+						$isAdmin = $currentUser && $currentUser->hasRole('admin');
+						$isWarehouseManager = $currentUser && $currentUser->hasRole('warehouse_manager');
+						$showLedLight = $isAdmin || ($isWarehouseManager && $currentUser->inventory_type == 'led_light');
+						$showSpices = $isAdmin || ($isWarehouseManager && $currentUser->inventory_type == 'spices');
 					@endphp
 
 					@if($showLedLight)

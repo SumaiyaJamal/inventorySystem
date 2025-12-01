@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\WarehouseManagerController;
+use App\Http\Controllers\VendorController;
 use App\Http\Controllers\InventoryRequestController;
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/warehouse-managers/{warehouseManager}/edit', [WarehouseManagerController::class, 'edit'])->name('warehouse-managers.edit');
     Route::put('/warehouse-managers/{warehouseManager}', [WarehouseManagerController::class, 'update'])->name('warehouse-managers.update');
     Route::delete('/warehouse-managers/{warehouseManager}', [WarehouseManagerController::class, 'destroy'])->name('warehouse-managers.destroy');
+
+    // Vendor routes
+    Route::prefix('vendors')->group(function () {
+        Route::get('', [VendorController::class, 'index'])->name('vendors.index');
+        Route::get('/create', [VendorController::class, 'create'])->name('vendors.create');
+        Route::post('', [VendorController::class, 'store'])->name('vendors.store');
+        Route::get('/{vendor}/edit', [VendorController::class, 'edit'])->name('vendors.edit');
+        Route::put('/{vendor}', [VendorController::class, 'update'])->name('vendors.update');
+        Route::delete('/{vendor}', [VendorController::class, 'destroy'])->name('vendors.destroy');
+    });
 });
 
 // Inventory Request routes

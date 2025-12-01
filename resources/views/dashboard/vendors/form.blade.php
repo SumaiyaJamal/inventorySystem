@@ -12,7 +12,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link rel="shortcut icon" href="{{ asset('assets/img/icons/icon-48x48.png') }}" />
 
-	<title>{{ isset($user) ? 'Edit' : 'Create' }} Salesman | AdminKit Demo</title>
+	<title>{{ isset($user) ? 'Edit' : 'Create' }} Vendor | AdminKit Demo</title>
 
 	<link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -66,7 +66,7 @@
 							User Management
 						</li>
 
-						<li class="sidebar-item active">
+						<li class="sidebar-item">
 							<a class="sidebar-link" href="{{ route('salesmen.index') }}">
 	              <i class="align-middle" data-feather="users"></i> <span class="align-middle">Salesmen</span>
 	            </a>
@@ -78,7 +78,7 @@
 	            </a>
 						</li>
 
-						<li class="sidebar-item">
+						<li class="sidebar-item active">
 							<a class="sidebar-link" href="{{ route('vendors.index') }}">
 	              <i class="align-middle" data-feather="truck"></i> <span class="align-middle">Vendors</span>
 	            </a>
@@ -114,8 +114,8 @@
 				<div class="container-fluid p-0">
 
 					<div class="d-flex justify-content-between align-items-center mb-3">
-						<h1 class="h3 mb-0"><strong>{{ isset($user) ? 'Edit' : 'Create' }}</strong> Salesman</h1>
-						<a href="{{ route('salesmen.index') }}" class="btn btn-secondary">
+						<h1 class="h3 mb-0"><strong>{{ isset($user) ? 'Edit' : 'Create' }}</strong> Vendor</h1>
+						<a href="{{ route('vendors.index') }}" class="btn btn-secondary">
 							<i class="align-middle me-1" data-feather="arrow-left"></i> Back to List
 						</a>
 					</div>
@@ -142,10 +142,10 @@
 						<div class="col-12">
 							<div class="card">
 								<div class="card-header">
-									<h5 class="card-title mb-0">Salesman Information</h5>
+									<h5 class="card-title mb-0">Vendor Information</h5>
 								</div>
 								<div class="card-body">
-									<form action="{{ isset($user) ? route('salesmen.update', $user) : route('salesmen.store') }}" method="POST">
+									<form action="{{ isset($user) ? route('vendors.update', $user) : route('vendors.store') }}" method="POST">
 										@csrf
 										@if(isset($user))
 											@method('PUT')
@@ -213,7 +213,7 @@
 										</div>
 
 										<div class="d-flex justify-content-end gap-2">
-											<a href="{{ route('salesmen.index') }}" class="btn btn-secondary">Cancel</a>
+											<a href="{{ route('vendors.index') }}" class="btn btn-secondary">Cancel</a>
 											<button type="submit" class="btn btn-primary">
 												<i class="align-middle me-1" data-feather="save"></i> {{ isset($user) ? 'Update' : 'Create' }}
 											</button>

@@ -77,6 +77,12 @@
 	              <i class="align-middle" data-feather="box"></i> <span class="align-middle">Warehouse Manager</span>
 	            </a>
 						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('vendors.index') }}">
+	              <i class="align-middle" data-feather="truck"></i> <span class="align-middle">Vendors</span>
+	            </a>
+						</li>
 					@endif
 				</ul>
 			</div>

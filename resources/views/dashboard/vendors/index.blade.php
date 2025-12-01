@@ -12,7 +12,9 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link rel="shortcut icon" href="{{ asset('assets/img/icons/icon-48x48.png') }}" />
 
-	<title>{{ isset($user) ? 'Edit' : 'Create' }} Salesman | AdminKit Demo</title>
+	<link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+	<title>Vendors | AdminKit Demo</title>
 
 	<link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -66,7 +68,7 @@
 							User Management
 						</li>
 
-						<li class="sidebar-item active">
+						<li class="sidebar-item">
 							<a class="sidebar-link" href="{{ route('salesmen.index') }}">
 	              <i class="align-middle" data-feather="users"></i> <span class="align-middle">Salesmen</span>
 	            </a>
@@ -78,7 +80,7 @@
 	            </a>
 						</li>
 
-						<li class="sidebar-item">
+						<li class="sidebar-item active">
 							<a class="sidebar-link" href="{{ route('vendors.index') }}">
 	              <i class="align-middle" data-feather="truck"></i> <span class="align-middle">Vendors</span>
 	            </a>
@@ -114,10 +116,15 @@
 				<div class="container-fluid p-0">
 
 					<div class="d-flex justify-content-between align-items-center mb-3">
-						<h1 class="h3 mb-0"><strong>{{ isset($user) ? 'Edit' : 'Create' }}</strong> Salesman</h1>
-						<a href="{{ route('salesmen.index') }}" class="btn btn-secondary">
-							<i class="align-middle me-1" data-feather="arrow-left"></i> Back to List
-						</a>
+						<h1 class="h3 mb-0"><strong>Vendors</strong> Management</h1>
+						<div class="d-flex gap-2">
+							<a href="{{ route('dashboard') }}" class="btn btn-secondary">
+								<i class="align-middle me-1" data-feather="arrow-left"></i> Back to Dashboard
+							</a>
+							<a href="{{ route('vendors.create') }}" class="btn btn-primary">
+								<i class="align-middle me-1" data-feather="plus"></i> Add New
+							</a>
+						</div>
 					</div>
 
 					@if(session('success'))
@@ -127,98 +134,57 @@
 						</div>
 					@endif
 
-					@if ($errors->any())
-						<div class="alert alert-danger alert-dismissible fade show" role="alert">
-							<ul class="mb-0">
-								@foreach ($errors->all() as $error)
-									<li>{{ $error }}</li>
-								@endforeach
-							</ul>
-							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-						</div>
-					@endif
-
 					<div class="row">
 						<div class="col-12">
 							<div class="card">
 								<div class="card-header">
-									<h5 class="card-title mb-0">Salesman Information</h5>
+									<h5 class="card-title mb-0">Vendors List</h5>
 								</div>
 								<div class="card-body">
-									<form action="{{ isset($user) ? route('salesmen.update', $user) : route('salesmen.store') }}" method="POST">
-										@csrf
-										@if(isset($user))
-											@method('PUT')
-										@endif
-
-										<div class="row">
-											<div class="col-md-6 mb-3">
-												<label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-												<input type="text" class="form-control @error('name') is-invalid @enderror" 
-													id="name" name="name" 
-													value="{{ old('name', isset($user) ? $user->name : '') }}" 
-													required>
-												@error('name')
-													<div class="invalid-feedback">{{ $message }}</div>
-												@enderror
-											</div>
-
-											<div class="col-md-6 mb-3">
-												<label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-												<input type="email" class="form-control @error('email') is-invalid @enderror" 
-													id="email" name="email" 
-													value="{{ old('email', isset($user) ? $user->email : '') }}" 
-													required>
-												@error('email')
-													<div class="invalid-feedback">{{ $message }}</div>
-												@enderror
-											</div>
+									@if($vendors->count() > 0)
+										<div class="table-responsive">
+											<table class="table table-hover my-0">
+												<thead>
+													<tr>
+														<th>Name</th>
+														<th>Email</th>
+														<th class="d-none d-md-table-cell">Location</th>
+														<th class="d-none d-xl-table-cell">Created At</th>
+														<th>Actions</th>
+													</tr>
+												</thead>
+												<tbody>
+													@foreach($vendors as $vendor)
+														<tr>
+															<td>{{ $vendor->name }}</td>
+															<td>{{ $vendor->email }}</td>
+															<td class="d-none d-md-table-cell">{{ $vendor->location ?? 'N/A' }}</td>
+															<td class="d-none d-xl-table-cell">{{ $vendor->created_at->format('M d, Y') }}</td>
+															<td>
+																<div class="d-flex gap-1">
+																	<a href="{{ route('vendors.edit', $vendor) }}" class="btn btn-sm btn-primary" title="Edit">
+																		<i class="align-middle" data-feather="edit-2" style="width: 14px; height: 14px;"></i>
+																	</a>
+																	<form action="{{ route('vendors.destroy', $vendor) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this vendor?');">
+																		@csrf
+																		@method('DELETE')
+																		<button type="submit" class="btn btn-sm btn-danger" title="Delete">
+																			<i class="align-middle" data-feather="trash-2" style="width: 14px; height: 14px;"></i>
+																		</button>
+																	</form>
+																</div>
+															</td>
+														</tr>
+													@endforeach
+												</tbody>
+											</table>
 										</div>
-
-										<div class="row">
-											<div class="col-md-6 mb-3">
-												<label for="password" class="form-label">Password <span class="text-danger">*</span>@if(isset($user))<small class="text-muted"> (Leave blank to keep current password)</small>@endif</label>
-												<input type="password" class="form-control @error('password') is-invalid @enderror" 
-													id="password" name="password" 
-													{{ !isset($user) ? 'required' : '' }}
-													minlength="8">
-												@error('password')
-													<div class="invalid-feedback">{{ $message }}</div>
-												@enderror
-											</div>
-
-											<div class="col-md-6 mb-3">
-												<label for="password_confirmation" class="form-label">Confirm Password <span class="text-danger">*</span>@if(isset($user))<small class="text-muted"> (Leave blank to keep current password)</small>@endif</label>
-												<input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" 
-													id="password_confirmation" name="password_confirmation" 
-													{{ !isset($user) ? 'required' : '' }}
-													minlength="8">
-												@error('password_confirmation')
-													<div class="invalid-feedback">{{ $message }}</div>
-												@enderror
-											</div>
+									@else
+										<div class="alert alert-info text-center">
+											<i class="align-middle me-2" data-feather="info"></i>
+											No vendors found. Please add some vendors to get started.
 										</div>
-
-										<div class="row">
-											<div class="col-md-6 mb-3">
-												<label for="location" class="form-label">Location</label>
-												<input type="text" class="form-control @error('location') is-invalid @enderror" 
-													id="location" name="location" 
-													value="{{ old('location', isset($user) ? $user->location : '') }}" 
-													placeholder="e.g., New York, London">
-												@error('location')
-													<div class="invalid-feedback">{{ $message }}</div>
-												@enderror
-											</div>
-										</div>
-
-										<div class="d-flex justify-content-end gap-2">
-											<a href="{{ route('salesmen.index') }}" class="btn btn-secondary">Cancel</a>
-											<button type="submit" class="btn btn-primary">
-												<i class="align-middle me-1" data-feather="save"></i> {{ isset($user) ? 'Update' : 'Create' }}
-											</button>
-										</div>
-									</form>
+									@endif
 								</div>
 							</div>
 						</div>

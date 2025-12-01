@@ -19,7 +19,7 @@ use App\Http\Controllers\InventoryRequestController;
 */
 //sumaiya
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('login');
 });
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::get('/logout', [DashboardController::class, 'logout'])->middleware('auth')->name('logout');
